@@ -40,7 +40,7 @@ class sensor():
     
             finally:
                 time.sleep(5.0)
-        return distancia
+        return (1,"Ultrasonico",distancia,2)
 
     def pir(self):
         # Import required Python libraries

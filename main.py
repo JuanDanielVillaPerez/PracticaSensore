@@ -6,9 +6,9 @@ gd = guardardatos()
 
 #1_Ultrasonico
 vsensor = sensor.ultrasonico()
-gd.guardarmysql(vsensor,1,2)
-gd.guardarmongo(vsensor,1)
-gd.guardardatostxt(vsensor,1)
+gd.guardarmysql(vsensor)
+gd.guardarmongo(vsensor)
+gd.guardardatostxt(vsensor)
 
 
 

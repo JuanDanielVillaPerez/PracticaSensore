@@ -6,37 +6,35 @@ import pymysql
 
 class guardardatos():
 
-    def guardarmysql(self,vsensor,sensor,type):
+    def guardarmysql(self,sensor):
+        id = sensor[0]
+        vsensor = sensor[2]
+        tipo = sensor[3]
         now = datetime.now()
         self._HyM = now.strftime("%y/%m/%d, %H:%M:%S")
         conexion = Conexion()
         self.cursor = conexion.conexionmysql().cursor()
         print('--------------------------------------------\nConexion establecida\n--------------------------------------------')
-        if type == 1:
+        if tipo == 1:
             sql = 'insert into valores(SensorID,1,`Fecha y hora`) values(%s,%s,%s)'
-            val = int(sensor),int(vsensor),self._HyM
-        if type == 2:
+            val = int(id),int(vsensor),self._HyM
+        if tipo == 2:
             sql = 'insert into valores(SensorID,2,`Fecha y hora`) values(%s,%s,%s)'
-            val = int(sensor),float(vsensor),self._HyM
-        if type == 3:
+            val = int(id),float(vsensor),self._HyM
+        if tipo == 3:
             sql = 'insert into valores(SensorID,3,`Fecha y hora`) values(%s,%s,%s)'
-            val = int(sensor),str(vsensor),self._HyM
+            val = int(id),str(vsensor),self._HyM
         
         self.cursor.execute(sql,val)
         conexion.conexionmysql().commit()
         
         print("--------------------------------------------\nDato insertado correctamente en MySQL\n--------------------------------------------")
 
-    def guardarmongo(self,vsensor,sensor):
+    def guardarmongo(self,sensor):
+        snsr = sensor[1]
+        vsensor = sensor[2]
         now = datetime.now()
-        if sensor == 1:
-            snsr = "Ultrasonico"
-        if sensor == 2:
-            snsr = "PIR"
-        if sensor == 3:
-            snsr = "Temperatura"
-        if sensor == 4:
-            snsr = "Humedad"
+        
         self._HyM = now.strftime("%y/%m/%d, %H:%M:%S")
         client = MongoClient('mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false')
         db = client['Sensores']
@@ -51,18 +49,14 @@ class guardardatos():
         print("---------------------------------")
         client.close()
 
-    def guardardatostxt(self,vsensor,sensor):
+    def guardardatostxt(self,sensor):
+        snsr = sensor[1]
+        vsensor = sensor[2]
         now = datetime.now()
         self._HyM = now.strftime("%y/%m/%d, %H:%M:%S")
         archivo_texto = open("Valores.txt", "a")
-        if sensor == 1:
-            archivo_texto.write("Ultrasonico")
-        if sensor == 2:
-            archivo_texto.write("PIR")
-        if sensor == 3:
-            archivo_texto.write("Temperatura")
-        if sensor == 4:
-            archivo_texto.write("Humedad")
+        archivo_texto.write(snsr)
+        archivo_texto.write("----")
         archivo_texto.write(vsensor)
         archivo_texto.write("--------------")
         archivo_texto.write(self._HyM)
